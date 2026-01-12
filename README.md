@@ -1,0 +1,7 @@
+- Create a repository 
+- Initialize the repository 
+- node_modules , package.json , pacakage-lock.json , json 
+-Install express 
+- Create a server 
+- Request handlers 
+- install nodemon and update scripts inside package.json
