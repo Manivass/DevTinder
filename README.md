@@ -20,3 +20,8 @@
 - next() 
 - next function and errors along with res.send() 
 - app.use("/route" , rH1 , [rH2 , rH3 , rH4] , rH5) -> array doesnt matter
+- What is a Middleware ? wht do need it .
+- How express JS basically handles requests behind the scenes
+- difference between app.use and app.all 
+- dummy auth middleware for admin
+- dummy auth middleware for users 

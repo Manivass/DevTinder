@@ -1,30 +1,25 @@
 const express = require("express");
+const { authAdmin, userAuth } = require("./Middlewares/auth.js");
 
 const app = express();
 
-app.use(
-  "/user",
-  (req, res, next) => {
-    console.log("Creating a Header 1 ");
-    // res.end("1st Resopnse");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Creating a Header 2");
-    // res.end("2nd Response");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Creating a Header 3");
-    // res.end("3rd Response");
-    next();
-  },
-  (req, res , next) => {
-    console.log("Creating a Header 4");
-    res.end("4th Response");
-    //next() => it shown an error , last route handler must doesnt want next() 
-  }
-);
+app.use("/admin", authAdmin);
+
+app.use("/user/login", (req, res) => {
+  res.send("User successfully logged in");
+});
+
+app.use("/user", userAuth, (req, res) => {
+  res.send("User active");
+});
+
+app.get("/admin/getData", (req, res) => {
+  res.send("gets the users data");
+});
+
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("delete the users data");
+});
 
 app.listen(4000, () => {
   console.log("Server Successfully Connected to Server");
