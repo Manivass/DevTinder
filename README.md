@@ -5,3 +5,18 @@
 - Create a server 
 - Request handlers 
 - install nodemon and update scripts inside package.json
+
+- initailize git 
+- .gitignore 
+- playing with route and route extensions ex . /hello , /hello/2 , /xyz 
+- order of routes matter a lot 
+- Install Postman app and make a workspace/collection > test API call in browser
+- Exploring routing and use of ? , + , () , * in the routes 
+- Use of regex in routes /a/ , /.*fly$/
+- Reading the query params inthe routes 
+- Reading the dynamics routes 
+
+- Multiple route handlers - play with code 
+- next() 
+- next function and errors along with res.send() 
+- app.use("/route" , rH1 , [rH2 , rH3 , rH4] , rH5) -> array doesnt matter
