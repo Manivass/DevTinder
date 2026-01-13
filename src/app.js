@@ -1,24 +1,17 @@
 const express = require("express");
-const { authAdmin, userAuth } = require("./Middlewares/auth.js");
 
 const app = express();
 
-app.use("/admin", authAdmin);
-
-app.use("/user/login", (req, res) => {
-  res.send("User successfully logged in");
+app.get("/user", (req, res) => {
+  try {
+    throw new Error("error");
+    res.send("Vanakam da mapla");
+  } catch (err) {
+    res.status(500).send("something went wrong");
+  }
 });
-
-app.use("/user", userAuth, (req, res) => {
-  res.send("User active");
-});
-
-app.get("/admin/getData", (req, res) => {
-  res.send("gets the users data");
-});
-
-app.get("/admin/deleteUser", (req, res) => {
-  res.send("delete the users data");
+app.use("/", (err, req, res, next) => {
+  res.status(500).send("something went wrong");
 });
 
 app.listen(4000, () => {

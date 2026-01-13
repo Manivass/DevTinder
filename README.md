@@ -25,3 +25,4 @@
 - difference between app.use and app.all 
 - dummy auth middleware for admin
 - dummy auth middleware for users 
+- error handlers
