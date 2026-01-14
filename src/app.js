@@ -20,6 +20,31 @@ app.post("/signUp", async (req, res) => {
   // res.send("User succesfully added");
 });
 
+app.get("/user", async (req, res) => {
+  let userEmail = req.body.emailId;
+  try {
+    const users = await User.find({ emailId: userEmail });
+    if (users.length === 0) {
+      res.status(404).send("Not found");
+    } else {
+      res.send(users);
+    }
+  } catch (err) {
+    res.status(500).send("something went wrong in user");
+  }
+});
+
+app.get("/feed", async (req, res) => {
+  try {
+    const userFeed = await User.find({});
+    userFeed.length === 0
+      ? res.status(404).send("user Not Found..")
+      : res.send(userFeed);
+  } catch (err) {
+    res.status(500).send("Something went wrong in feed");
+  }
+});
+
 connectionDB()
   .then(() => {
     console.log("DB is successfully connected to cluster");
