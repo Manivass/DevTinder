@@ -26,3 +26,6 @@
 - dummy auth middleware for admin
 - dummy auth middleware for users 
 - error handlers
+
+- connect the applicatoin to the DB "connection-url"
+- call the connectionDB function connect to DB before starting the server
