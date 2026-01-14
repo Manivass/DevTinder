@@ -40,4 +40,6 @@
 - User.findOne with duplicate email ids , which one retured
 - API - Get your email 
 - API - Feed API-GET/feed - get all the users from the database
-
+- API - delete / update a user 
+- Explore the mongoose documentation for model methods
+- API - Update the user with email ID

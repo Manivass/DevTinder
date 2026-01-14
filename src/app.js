@@ -4,6 +4,8 @@ const User = require("./models/user.js");
 const app = express();
 
 app.use(express.json());
+
+// posting user to db
 app.post("/signUp", async (req, res) => {
   console.log(req.body);
 
@@ -20,6 +22,7 @@ app.post("/signUp", async (req, res) => {
   // res.send("User succesfully added");
 });
 
+// finding user from db
 app.get("/user", async (req, res) => {
   let userEmail = req.body.emailId;
   try {
@@ -34,6 +37,7 @@ app.get("/user", async (req, res) => {
   }
 });
 
+//getting all users from db
 app.get("/feed", async (req, res) => {
   try {
     const userFeed = await User.find({});
@@ -44,6 +48,32 @@ app.get("/feed", async (req, res) => {
     res.status(500).send("Something went wrong in feed");
   }
 });
+
+// removing user from db using id
+app.delete("/user", async (req, res) => {
+  let userId = req.body.userId;
+  try {
+    await User.findByIdAndDelete(userId);
+    res.send("user successfully deleted");
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+});
+
+//updating user using id
+app.patch("/user", async (req, res) => {
+  let emailId = req.body.emailId;
+  console.log(emailId);
+  let data = req.body;
+  try {
+    await User.findOneAndUpdate({ emailId: emailId }, {emailId : "manivass.in@gmail.com"});
+    res.send("user updated successfully");
+  } catch (err) {
+    res.status(500).send("something went wrong");
+  }
+});
+
+//updating user using email Id
 
 connectionDB()
   .then(() => {
