@@ -29,3 +29,7 @@
 
 - connect the applicatoin to the DB "connection-url"
 - call the connectionDB function connect to DB before starting the server
+- Create a userSchema & user Model 
+- Create POST / signup API to add data to database 
+- push some documents using API calls from postman
+- Error handling using try , catch
