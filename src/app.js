@@ -60,20 +60,18 @@ app.delete("/user", async (req, res) => {
   }
 });
 
-//updating user using id
+//updating user using id and emailId
 app.patch("/user", async (req, res) => {
+  let userId = req.body.userId;
   let emailId = req.body.emailId;
-  console.log(emailId);
   let data = req.body;
   try {
-    await User.findOneAndUpdate({ emailId: emailId }, {emailId : "manivass.in@gmail.com"});
+    await User.findOneAndUpdate(userId, data);
     res.send("user updated successfully");
   } catch (err) {
     res.status(500).send("something went wrong");
   }
 });
-
-//updating user using email Id
 
 connectionDB()
   .then(() => {
