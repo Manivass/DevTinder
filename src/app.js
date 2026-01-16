@@ -7,14 +7,12 @@ app.use(express.json());
 
 // posting user to db
 app.post("/signUp", async (req, res) => {
-  console.log(req.body);
-
   const user = new User(req.body);
   try {
     await user.save();
     res.send("User successfully added");
   } catch (err) {
-    res.status(400).send("Something went wrong..");
+    res.status(400).send(err.message);
   }
 
   // const user = new User(userObj);
@@ -66,7 +64,9 @@ app.patch("/user", async (req, res) => {
   let emailId = req.body.emailId;
   let data = req.body;
   try {
-    await User.findOneAndUpdate(userId, data);
+    await User.findByIdAndUpdate(userId, data, {
+      runValidators: true,
+    });
     res.send("user updated successfully");
   } catch (err) {
     res.status(500).send("something went wrong");

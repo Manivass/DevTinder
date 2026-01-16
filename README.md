@@ -43,3 +43,12 @@
 - API - delete / update a user 
 - Explore the mongoose documentation for model methods
 - API - Update the user with email ID
+
+
+- Explore schematype options from the documentation
+- add required , unique , lowercase , min , minLength , trim 
+- Add default 
+- Create a custom validate function for gender
+- Improve the DB schemas - put all validate appropriate validations on each field in the schemas
+- Add timestamps to the userSchema
+- Add Runvalidators in the option for patch
