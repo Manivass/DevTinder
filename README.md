@@ -57,3 +57,4 @@
 
 - Install validator 
 - Explore validator library function and use validator funcs for password , email
+- NEVER TRUST req.body
