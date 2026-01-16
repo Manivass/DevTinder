@@ -54,3 +54,6 @@
 - Add Runvalidators in the option for patch
 - Add API level validations on Patch Request & signUp post api
 - Data Sanitizing - Add API validation for each field
+
+- Install validator 
+- Explore validator library function and use validator funcs for password , email
