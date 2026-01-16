@@ -1,6 +1,8 @@
 const express = require("express");
 const { connectionDB } = require("./config/database.js");
 const User = require("./models/user.js");
+const { UPDATED_VALUES } = require("./utils/constant.js");
+
 const app = express();
 
 app.use(express.json());
@@ -59,17 +61,22 @@ app.delete("/user", async (req, res) => {
 });
 
 //updating user using id and emailId
-app.patch("/user", async (req, res) => {
-  let userId = req.body.userId;
-  let emailId = req.body.emailId;
+app.patch("/user/:userId", async (req, res) => {
+  let userId = req.params.userId;
   let data = req.body;
+  let dataKeys = Object.keys(data);
+  let skills = req.body.skills;
   try {
+    let validUpdatedValues = dataKeys?.every((k) => UPDATED_VALUES.includes(k));
+    if (!validUpdatedValues) {
+      throw new Error("updated failed . give only valid fields");
+    }
     await User.findByIdAndUpdate(userId, data, {
       runValidators: true,
     });
     res.send("user updated successfully");
   } catch (err) {
-    res.status(500).send("something went wrong");
+    res.status(500).send(err.message);
   }
 });
 

@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema(
       required: true,
       maxLength: 50,
       minLength: 2,
-      trimm: true,
+      trim: true,
     },
     lastName: {
       type: String,
@@ -44,6 +44,7 @@ const userSchema = mongoose.Schema(
     about: {
       type: String,
       default: "This is default about of the user",
+      maxLength : 250 ,
     },
     photoURL: {
       type: String,
@@ -52,6 +53,11 @@ const userSchema = mongoose.Schema(
     },
     skills: {
       type: [String],
+      validate : function(value){
+        if(value.length > 10){
+          throw new Error("only 10 skills are allowed . please give less than 10 skills");
+        }
+      }
     },
   },
   {

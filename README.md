@@ -52,3 +52,5 @@
 - Improve the DB schemas - put all validate appropriate validations on each field in the schemas
 - Add timestamps to the userSchema
 - Add Runvalidators in the option for patch
+- Add API level validations on Patch Request & signUp post api
+- Data Sanitizing - Add API validation for each field
