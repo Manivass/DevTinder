@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
+const { default: isEmail } = require("validator/lib/isEmail");
 
 const userSchema = mongoose.Schema(
   {
@@ -19,13 +21,23 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      lowerCase: true,
+      lowercase: true,
       trim: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("email is invalid");
+        }
+      },
     },
     password: {
       type: String,
       required: true,
-      minLentgth: 8,
+      minLength: 8,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Password is weak");
+        }
+      },
     },
     age: {
       type: Number,
@@ -44,20 +56,25 @@ const userSchema = mongoose.Schema(
     about: {
       type: String,
       default: "This is default about of the user",
-      maxLength : 250 ,
+      maxLength: 250,
     },
     photoURL: {
       type: String,
       default:
         "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80",
+      validate(value) {
+        if (!validator.isURL(value)) throw new Error("URL is not found");
+      },
     },
     skills: {
       type: [String],
-      validate : function(value){
-        if(value.length > 10){
-          throw new Error("only 10 skills are allowed . please give less than 10 skills");
+      validate: function (value) {
+        if (value && value.length > 10) {
+          throw new Error(
+            "only 10 skills are allowed . please give less than 10 skills"
+          );
         }
-      }
+      },
     },
   },
   {
