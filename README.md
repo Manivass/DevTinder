@@ -58,3 +58,7 @@
 - Install validator 
 - Explore validator library function and use validator funcs for password , email
 - NEVER TRUST req.body
+
+- Validata data in Signup API 
+- Install bcrypt package 
+- Create  Password Hash using bcrypt.hash & save the user is excrupted password
