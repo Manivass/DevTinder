@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const express = require("express");
+const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { connectionDB } = require("./config/database.js");
 const User = require("./models/user.js");
@@ -14,11 +16,10 @@ app.post("/signUp", async (req, res) => {
   try {
     // validating the req
     validationSignUp(req);
-    const { firstName, lastName, emailId, password} =
-      req.body;
+    const { firstName, lastName, emailId, password } = req.body;
 
     // encrypt the password
-    const passwordHash = bcrypt.hashSync(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     // creating a new instances of User
     const user = new User({
@@ -39,16 +40,40 @@ app.post("/signUp", async (req, res) => {
   // res.send("User succesfully added");
 });
 
+// login user
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    if (!emailId || !password) {
+      throw new Error("please enter the required field");
+    } else if (!validator.isEmail(emailId)) {
+      throw new Error("please enter valid emailId");
+    }
+    const findingEmail = await User.findOne({ emailId: emailId });
+    if (!findingEmail) {
+      throw new Error("Invalid creditenials");
+    }
+
+    const checkPassword = await bcrypt.compare(password, findingEmail.password);
+    if (!checkPassword) {
+      throw new Error("Invalid creditenials");
+    }
+    res.send("successfully logged in 💐");
+  } catch (err) {
+    res.status(401).send("ERROR :" + err.message);
+  }
+});
+
 // finding user from db
 app.get("/user", async (req, res) => {
-  let userEmail = req.body.emailId;
   try {
-    const users = await User.find({ emailId: userEmail });
-    if (users.length === 0) {
-      res.status(404).send("Not found");
-    } else {
-      res.send(users);
+    let userEmail = req.body.emailId;
+    if (!validator.isEmail(userEmail)) throw new Error("email is not found");
+    const users = await User.findOne({ emailId: userEmail });
+    if (!users) {
+      res.status(404).send("User Not Found");
     }
+    res.send(users);
   } catch (err) {
     res.status(500).send("something went wrong in user");
   }
@@ -68,12 +93,14 @@ app.get("/feed", async (req, res) => {
 
 // removing user from db using id
 app.delete("/user", async (req, res) => {
-  let userId = req.body.userId;
   try {
+    let userId = req.body.userId;
+    const isUseravailabe = await User.findById(userId);
+    if (!isUseravailabe) throw new Error("user is not available");
     await User.findByIdAndDelete(userId);
     res.send("user successfully deleted");
   } catch (err) {
-    res.status(500).send("Something went wrong");
+    res.status(500).send("ERROR : " + err.message);
   }
 });
 
@@ -82,11 +109,15 @@ app.patch("/user/:userId", async (req, res) => {
   let userId = req.params.userId;
   let data = req.body;
   let dataKeys = Object.keys(data);
-  let skills = req.body.skills;
   try {
+    let userAvailable = await User.findOne({ _id: userId });
+    if (!userAvailable) {
+      res.status(404).send("User not found");
+    }
+
     let validUpdatedValues = dataKeys?.every((k) => UPDATED_VALUES.includes(k));
     if (!validUpdatedValues) {
-      throw new Error("updated failed . give only valid fields");
+      return res.status(400).send("Update failed. Invalid fields");
     }
     await User.findByIdAndUpdate(userId, data, {
       runValidators: true,
