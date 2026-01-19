@@ -62,3 +62,10 @@
 - Validata data in Signup API 
 - Install bcrypt package 
 - Create  Password Hash using bcrypt.hash & save the user is excrupted password
+
+- Install cookie-pareser
+- just send a dummy cooker to the user
+- create GET / profile  API and check if the is comming back or not 
+- install jsonwebtoken
+- in login API , after password validation , email validation , create a token and send to user using a cookie
+- read the cookies inside your Profile API and find the logger in the user

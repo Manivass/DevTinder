@@ -6,11 +6,13 @@ const { connectionDB } = require("./config/database.js");
 const User = require("./models/user.js");
 const { UPDATED_VALUES } = require("./utils/constant.js");
 const { validationSignUp } = require("./utils/validation.js");
-
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { userAuth } = require("./Middlewares/auth.js");
 const app = express();
 
 app.use(express.json());
-
+app.use(cookieParser());
 // posting user to db
 app.post("/signUp", async (req, res) => {
   try {
@@ -58,74 +60,33 @@ app.post("/login", async (req, res) => {
     if (!checkPassword) {
       throw new Error("Invalid creditenials");
     }
+    const { _id } = findingEmail;
+
+    // creating token
+
+    const token = jwt.sign({ _id: _id }, "DEV@TINDER$!@#"); //DEV@TINDER$!@# -> secret key
+
+    res.cookie("token", token);
     res.send("successfully logged in 💐");
   } catch (err) {
     res.status(401).send("ERROR :" + err.message);
   }
 });
 
-// finding user from db
-app.get("/user", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    let userEmail = req.body.emailId;
-    if (!validator.isEmail(userEmail)) throw new Error("email is not found");
-    const users = await User.findOne({ emailId: userEmail });
-    if (!users) {
-      res.status(404).send("User Not Found");
-    }
-    res.send(users);
+    const user = req.user;
+    res.send(user);
   } catch (err) {
-    res.status(500).send("something went wrong in user");
+    res.status(404).send("ERROR :" + err.message);
   }
 });
 
-//getting all users from db
-app.get("/feed", async (req, res) => {
+app.post("/sendingConnection", userAuth, async (req, res) => {
   try {
-    const userFeed = await User.find({});
-    userFeed.length === 0
-      ? res.status(404).send("user Not Found..")
-      : res.send(userFeed);
-  } catch (err) {
-    res.status(500).send("Something went wrong in feed");
-  }
-});
-
-// removing user from db using id
-app.delete("/user", async (req, res) => {
-  try {
-    let userId = req.body.userId;
-    const isUseravailabe = await User.findById(userId);
-    if (!isUseravailabe) throw new Error("user is not available");
-    await User.findByIdAndDelete(userId);
-    res.send("user successfully deleted");
-  } catch (err) {
-    res.status(500).send("ERROR : " + err.message);
-  }
-});
-
-//updating user using id and emailId
-app.patch("/user/:userId", async (req, res) => {
-  let userId = req.params.userId;
-  let data = req.body;
-  let dataKeys = Object.keys(data);
-  try {
-    let userAvailable = await User.findOne({ _id: userId });
-    if (!userAvailable) {
-      res.status(404).send("User not found");
-    }
-
-    let validUpdatedValues = dataKeys?.every((k) => UPDATED_VALUES.includes(k));
-    if (!validUpdatedValues) {
-      return res.status(400).send("Update failed. Invalid fields");
-    }
-    await User.findByIdAndUpdate(userId, data, {
-      runValidators: true,
-    });
-    res.send("user updated successfully");
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
+    const user = req.user;
+    res.send(user.firstName + " sending the connection request");
+  } catch (err) {}
 });
 
 connectionDB()
