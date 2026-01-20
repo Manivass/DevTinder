@@ -71,4 +71,4 @@
 - read the cookies inside your Profile API and find the logger in the user
 - userAuth Middleware 
 - add the userAuth middleware in profile API and a new sendConnectionRequest API
-- Set the expiry of JWT token and contains to 1 day 
+- Set the expiry of JWT token and contains to 1 day

@@ -55,20 +55,17 @@ app.post("/login", async (req, res) => {
     if (!findingEmail) {
       throw new Error("Invalid creditenials");
     }
+    const checkPassword = await findingEmail.comparePasswordAndHash(password);
 
-    const checkPassword = await bcrypt.compare(password, findingEmail.password);
     if (!checkPassword) {
       throw new Error("Invalid creditenials");
     }
+    // creating token and using schema methods
 
-    // creating token
-
-    const token = jwt.sign({ _id: findingEmail._id }, "DEV@TINDER$!@#", {
-      expiresIn: "1d",
-    });
+    const token = await findingEmail.getJWT();
 
     res.cookie("token", token, {
-      expires: new Date(Date.now()  + 1 * 60 * 60*60),
+      expires: new Date(Date.now() + 1 * 60 * 60 * 60),
     });
     res.send("successfully logged in 💐");
   } catch (err) {

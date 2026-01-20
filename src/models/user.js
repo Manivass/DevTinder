@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const { default: isEmail } = require("validator/lib/isEmail");
-
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const userSchema = mongoose.Schema(
   {
     firstName: {
@@ -71,7 +72,7 @@ const userSchema = mongoose.Schema(
       validate: function (value) {
         if (value && value.length > 10) {
           throw new Error(
-            "only 10 skills are allowed . please give less than 10 skills"
+            "only 10 skills are allowed . please give less than 10 skills",
           );
         }
       },
@@ -79,9 +80,21 @@ const userSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
+userSchema.methods.comparePasswordAndHash= async function (
+  getPasswordFromUser,
+) {
+  const user = this;
+  const passwordHash = await bcrypt.compare(getPasswordFromUser, user.password);
+  return passwordHash;
+};
+userSchema.methods.getJWT = async function () {
+  let user = this;
+  let token = await jwt.sign({ _id: user._id }, "DEV@TINDER$!@#");
+  return token;
+};
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
