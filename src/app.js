@@ -60,19 +60,23 @@ app.post("/login", async (req, res) => {
     if (!checkPassword) {
       throw new Error("Invalid creditenials");
     }
-    const { _id } = findingEmail;
 
     // creating token
 
-    const token = jwt.sign({ _id: _id }, "DEV@TINDER$!@#"); //DEV@TINDER$!@# -> secret key
+    const token = jwt.sign({ _id: findingEmail._id }, "DEV@TINDER$!@#", {
+      expiresIn: "1d",
+    });
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      expires: new Date(Date.now()  + 1 * 60 * 60*60),
+    });
     res.send("successfully logged in 💐");
   } catch (err) {
     res.status(401).send("ERROR :" + err.message);
   }
 });
 
+// getting the user profile
 app.get("/profile", userAuth, async (req, res) => {
   try {
     const user = req.user;
@@ -82,11 +86,14 @@ app.get("/profile", userAuth, async (req, res) => {
   }
 });
 
+//sending the connection request
 app.post("/sendingConnection", userAuth, async (req, res) => {
   try {
     const user = req.user;
     res.send(user.firstName + " sending the connection request");
-  } catch (err) {}
+  } catch (err) {
+    res.status(404).send("ERROR :" + err.message);
+  }
 });
 
 connectionDB()
