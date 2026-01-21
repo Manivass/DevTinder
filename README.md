@@ -72,3 +72,9 @@
 - userAuth Middleware 
 - add the userAuth middleware in profile API and a new sendConnectionRequest API
 - Set the expiry of JWT token and contains to 1 day
+
+- Explore Tinder API 
+- Create a list of all api
+- Group multiple routes under respective routers
+- Read documentaiton for express.js
+- create route folder for managing auth , profile , request routers

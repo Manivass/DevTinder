@@ -10,7 +10,7 @@
 - GET /profile/password
 - GET /profile/edit
 
-## Request Router
+## ConnectionRequestRouter
 - GET /request/send/intersted/:userId
 - GET /request/send/ignore/:userId
 - GET /request/review/accepted/:userId
@@ -18,5 +18,7 @@
 
 ## User Router
 - GET /user/connections
-- GET /user/feed
+- GET /user/feed - get the profiles of other user in instagram
 - GET /user/requests/received
+
+Status : ignore , accepted , rejected , intrested .
