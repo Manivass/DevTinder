@@ -78,3 +78,8 @@
 - Group multiple routes under respective routers
 - Read documentaiton for express.js
 - create route folder for managing auth , profile , request routers
+- create authRouter , profilerRouter , requestRouter
+- Import these routers in app.js
+- Create POST/logout API
+- Create PATCH /profile/edit
+- Make you validate all data in ever POST ,PATCH apis
