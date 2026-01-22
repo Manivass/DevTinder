@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/", profileRouter);
 app.use("/", authRouter);
+app.use("/", profileRouter);
 
 connectionDB()
   .then(() => {

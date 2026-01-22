@@ -1,16 +1,16 @@
-const { validationSignUp } = require("../utils/validation.js");
+const { sanitizationSignUp } = require("../validation/sanitization.js");
 const User = require("../models/user.js");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const express = require("express");
-const validator = require('validator');
-
+const validator = require("validator");
+const { userAuth } = require("../Middlewares/auth.js");
 const authRouter = express.Router();
 
 // posting user to db
 authRouter.post("/signUp", async (req, res) => {
   try {
     // validating the req
-    validationSignUp(req);
+    sanitizationSignUp(req);
     const { firstName, lastName, emailId, password } = req.body;
 
     // encrypt the password
@@ -64,6 +64,12 @@ authRouter.post("/login", async (req, res) => {
   } catch (err) {
     res.status(401).send("ERROR :" + err.message);
   }
+});
+
+authRouter.post("/logout", userAuth, async (req, res) => {
+  res
+    .cookie("token", null, { expires: new Date(Date.now()) })
+    .send("logout successfully");
 });
 
 module.exports = { authRouter };

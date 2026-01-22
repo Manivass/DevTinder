@@ -83,7 +83,7 @@ const userSchema = mongoose.Schema(
   },
 );
 
-userSchema.methods.comparePasswordAndHash= async function (
+userSchema.methods.comparePasswordAndHash = async function (
   getPasswordFromUser,
 ) {
   const user = this;

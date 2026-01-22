@@ -1,4 +1,13 @@
-const UPDATED_VALUES = ["skills", "age", "gender", "about", "photoURL"];
+const UPDATED_VALUES = [
+  "skills",
+  "age",
+  "gender",
+  "about",
+  "photoURL",
+  "firstName",
+  "lastName",
+  "emailId"
+];
 
 const SIGNED_VALUES = [];
 
