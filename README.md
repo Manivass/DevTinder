@@ -83,3 +83,14 @@
 - Create POST/logout API
 - Create PATCH /profile/edit
 - Make you validate all data in ever POST ,PATCH apis
+
+- Create a connection Request Schema
+- Send Connection Request 
+- Proper validation Data
+- Think about All corner case
+- mongoDB query($or , $and)
+- schema.pre("save") function
+- Read more about indexes 
+- Why you need index in DB
+- What is the advantage and disadvantage of creating ?
+- Read the article about compund indexes

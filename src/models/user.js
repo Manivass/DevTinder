@@ -83,6 +83,7 @@ const userSchema = mongoose.Schema(
   },
 );
 
+userSchema.index({ firstName: 1 });
 userSchema.methods.comparePasswordAndHash = async function (
   getPasswordFromUser,
 ) {
