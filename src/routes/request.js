@@ -32,6 +32,9 @@ requestRouter.post(
       if (isConnectionAlreadySend) {
         return res.status(400).send("connection already sended");
       }
+      if (fromUserId.equals(toUserId)) {
+        throw new Error("you cannot send message to yourself");
+      }
 
       const data = new ConnectionRequest({
         fromUserId,
@@ -40,6 +43,34 @@ requestRouter.post(
       });
       await data.save();
       res.json({ message: "connection send successfully", data });
+    } catch (err) {
+      res.status(400).send(err.message);
+    }
+  },
+);
+
+requestRouter.post(
+  "/request/review/:status/:reqId",
+  userAuth,
+  async (req, res) => {
+    try {
+      let loggedUser = req.user;
+      let { status, reqId } = req.params;
+      const allowedStatus = ["accepted", "rejected"];
+      if (!allowedStatus.includes(status)) {
+        return res.send(400).send(`${status} is not valid status`);
+      }
+      const connectionAvailable = await ConnectionRequest.findOne({
+        _id: reqId,
+        toUserId: loggedUser._id,
+        status: "interested",
+      });
+      if (!connectionAvailable) {
+        res.status(404).send("user not found");
+      }
+      connectionAvailable.status = status;
+      await connectionAvailable.save();
+      res.json({ meesage: `${status} successfully`, connectionAvailable });
     } catch (err) {
       res.status(400).send(err.message);
     }

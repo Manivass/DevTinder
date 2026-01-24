@@ -13,7 +13,7 @@ const connectionRequestSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["accepeted", "rejected", "ignored", "interested"],
+        values: ["accepted", "rejected", "ignored", "interested"],
         message: `{VALUE} is not valid status`,
       },
       required: true,
@@ -23,14 +23,6 @@ const connectionRequestSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-connectionRequestSchema.pre("save", function (req, res, next) {
-  const { fromUserId, toUserId } = this;
-  if (fromUserId.equals(toUserId)) {
-    throw new Error("you cannot send message to yourself");
-  }
-  next();
-});
-
 
 const ConnectionRequest = new mongoose.model(
   "connectionRequest",
