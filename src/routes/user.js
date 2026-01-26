@@ -32,6 +32,9 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     })
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
+    if (!connections) {
+      return res.status(404).send("No connections found");
+    }
     const data = connections.map((connector) => {
       if (connector.fromUserId.equals(loggedUser._id)) {
         return connector.toUserId;
