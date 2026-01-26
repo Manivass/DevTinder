@@ -6,9 +6,9 @@ const UPDATED_VALUES = [
   "photoURL",
   "firstName",
   "lastName",
-  "emailId"
+  "emailId",
 ];
 
-const SIGNED_VALUES = [];
+const USER_SAFE_DATA = "firstName lastName photURL gender age about skills";
 
-module.exports = { UPDATED_VALUES };
+module.exports = { UPDATED_VALUES, USER_SAFE_DATA };

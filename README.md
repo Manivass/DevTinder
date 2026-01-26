@@ -94,3 +94,7 @@
 - Why you need index in DB
 - What is the advantage and disadvantage of creating ?
 - Read the article about compund indexes
+
+- create a connection accpet/reject api
+- ref and pop in mongoose
+- creating user/request/received api and user/connections api

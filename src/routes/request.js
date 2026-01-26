@@ -3,8 +3,9 @@ const ConnectionRequest = require("../models/connectionRequest");
 const { userAuth } = require("../Middlewares/auth");
 const requestRouter = express.Router();
 const User = require("../models/user");
-const { Collection } = require("mongoose");
+const { USER_SAFE_DATA } = require("../utils/constant");
 
+// sending api
 requestRouter.post(
   "/request/send/:status/:toUserId",
   userAuth,
@@ -49,6 +50,7 @@ requestRouter.post(
   },
 );
 
+// reviewing api
 requestRouter.post(
   "/request/review/:status/:reqId",
   userAuth,
@@ -58,7 +60,7 @@ requestRouter.post(
       let { status, reqId } = req.params;
       const allowedStatus = ["accepted", "rejected"];
       if (!allowedStatus.includes(status)) {
-        return res.send(400).send(`${status} is not valid status`);
+        return res.status(400).send(status + " is not valid status");
       }
       const connectionAvailable = await ConnectionRequest.findOne({
         _id: reqId,
@@ -66,11 +68,11 @@ requestRouter.post(
         status: "interested",
       });
       if (!connectionAvailable) {
-        res.status(404).send("user not found");
+        return res.status(404).send("user not found");
       }
       connectionAvailable.status = status;
       await connectionAvailable.save();
-      res.json({ meesage: `${status} successfully`, connectionAvailable });
+      res.json({ message: `${status} successfully`, connectionAvailable });
     } catch (err) {
       res.status(400).send(err.message);
     }
