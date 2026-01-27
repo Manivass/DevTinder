@@ -52,6 +52,9 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 userRouter.get("/user/feed", userAuth, async (req, res) => {
   try {
     const loggedUser = req.user;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
     const connectionRequests = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedUser._id }, { toUserId: loggedUser._id }],
     }).select("fromUserId toUserId");
@@ -61,8 +64,14 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
       hideUserFromFeed.add(user.toUserId.toString());
     });
     const usersValidForFeed = await User.find({
-      _id: { $nin: Array.from(hideUserFromFeed) },
-    }).select(USER_SAFE_DATA);
+      $and: [
+        { _id: { $nin: Array.from(hideUserFromFeed) } },
+        { _id: { $ne: loggedUser._id } },
+      ],
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
 
     res.json({ feed: usersValidForFeed });
   } catch (err) {
@@ -71,5 +80,15 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
     });
   }
 });
+
+/*
+Pagination
+
+/user/feed?page=1&limit=10 -> 1 - 10 user -> .skip(0) .limit(10)
+
+/user/feed?page=2&limit=10 -> 11 - 20 user -> .skip(10) .limit(10)
+
+/user/feed?page=3&limit=10 -> 21 - 30 user -> skip(10)  .limit(10)
+*/
 
 module.exports = { userRouter };

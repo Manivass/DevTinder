@@ -98,4 +98,6 @@
 - create a connection accpet/reject api
 - ref and pop in mongoose
 - create user/request/received api and user/connections api
+
 - create user/feed api
+- Explore the $ne , $and , $nin and other query parameter  
