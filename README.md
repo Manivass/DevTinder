@@ -97,4 +97,5 @@
 
 - create a connection accpet/reject api
 - ref and pop in mongoose
-- creating user/request/received api and user/connections api
+- create user/request/received api and user/connections api
+- create user/feed api
