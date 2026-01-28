@@ -60,7 +60,7 @@ authRouter.post("/login", async (req, res) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 1 * 60 * 60 * 60),
     });
-    res.send("successfully logged in 💐");
+    res.send(findingEmail);
   } catch (err) {
     res.status(401).send("ERROR :" + err.message);
   }
