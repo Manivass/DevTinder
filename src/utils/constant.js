@@ -9,6 +9,6 @@ const UPDATED_VALUES = [
   "emailId",
 ];
 
-const USER_SAFE_DATA = "firstName lastName photURL gender age about skills";
+const USER_SAFE_DATA = "firstName lastName photoURL gender age about skills";
 
 module.exports = { UPDATED_VALUES, USER_SAFE_DATA };
