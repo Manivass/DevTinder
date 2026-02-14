@@ -3,7 +3,7 @@ const User = require("../models/user");
 const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    if (!token) throw new Error("token is invalid!!!!");
+    if (!token) throw new Error("please login!!!");
     // valiate the token
     const decoded = jwt.verify(token, "DEV@TINDER$!@#");
     const { _id } = decoded;
