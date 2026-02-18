@@ -4,7 +4,7 @@ const { userAuth } = require("../Middlewares/auth");
 const requestRouter = express.Router();
 const User = require("../models/user");
 const { USER_SAFE_DATA } = require("../utils/constant");
-
+const sendEmail = require("../utils/sendEmail");
 // sending api
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -43,6 +43,9 @@ requestRouter.post(
         status,
       });
       await data.save();
+      const emailRes = await sendEmail.run();
+      console.log(emailRes);
+
       res.json({ message: "connection send successfully", data });
     } catch (err) {
       res.status(400).send(err.message);
