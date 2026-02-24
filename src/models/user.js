@@ -93,7 +93,7 @@ userSchema.methods.comparePasswordAndHash = async function (
 };
 userSchema.methods.getJWT = async function () {
   let user = this;
-  let token = await jwt.sign({ _id: user._id }, "DEV@TINDER$!@#");
+  let token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY);
   return token;
 };
 const User = mongoose.model("User", userSchema);

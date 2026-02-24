@@ -5,7 +5,7 @@ const userAuth = async (req, res, next) => {
     const { token } = req.cookies;
     if (!token) throw new Error("please login!!!");
     // valiate the token
-    const decoded = jwt.verify(token, "DEV@TINDER$!@#");
+    const decoded = jwt.verify(token, "DEV@TINDER$!@#" );
     const { _id } = decoded;
     const userAvailable = await User.findById(_id);
     if (!userAvailable) return res.status(401).send("unAuthorized access");
