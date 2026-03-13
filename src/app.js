@@ -12,13 +12,14 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   }),
 );
 
 app.use(express.json());
 app.use(cookieParser());
+require("./utils/cronjob.js");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
@@ -28,7 +29,7 @@ app.use("/", userRouter);
 connectionDB()
   .then(() => {
     console.log("DB is successfully connected to cluster");
-    app.listen(4000, () => {
+    app.listen(4000, "0.0.0.0", () => {
       console.log("Server Successfully Connected to Server");
     });
   })
