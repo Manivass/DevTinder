@@ -7,12 +7,13 @@ const { authRouter } = require("./routes/auth.js");
 const { profileRouter } = require("./routes/profile.js");
 const { requestRouter } = require("./routes/request.js");
 const { userRouter } = require("./routes/user.js");
+const { paymentRouter } = require("./routes/payment.js");
 require("dotenv").config();
 const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );
@@ -25,11 +26,12 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/", paymentRouter);
 
 connectionDB()
   .then(() => {
     console.log("DB is successfully connected to cluster");
-    app.listen(4000, "0.0.0.0", () => {
+    app.listen(4000, () => {
       console.log("Server Successfully Connected to Server");
     });
   })

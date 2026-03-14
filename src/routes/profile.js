@@ -21,7 +21,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 //editing the profile
 profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   try {
-    if (!isValidateEditAllowed(req)) {
+    if (!isValidateEditAllowed(req)) {f
       throw new Error("your fields are invalid");
     }
     sanitizeUpdateField(req);
