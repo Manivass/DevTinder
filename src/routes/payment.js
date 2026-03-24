@@ -60,8 +60,9 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
         .json({ success: false, message: " your webhook is invalid " });
     }
 
-    const paymentDetails = req.body.payload.entity;
+    const paymentDetails = req.body.payload.payment.entity;
     console.log(paymentDetails);
+    
 
     const isPaymentAvailable = await Payment.findOne({
       orderId: paymentDetails.order_id,
