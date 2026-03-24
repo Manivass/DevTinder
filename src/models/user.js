@@ -77,6 +77,13 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    isPremiuemUser: {
+      type: Boolean,
+      default: false,
+    },
+    membershipType: {
+      type: String,
+    },
   },
   {
     timestamps: true,
