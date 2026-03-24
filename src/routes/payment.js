@@ -61,6 +61,7 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
     }
 
     const paymentDetails = req.body.payload.entity;
+    console.log(paymentDetails);
 
     const isPaymentAvailable = await Payment.findOne({
       orderId: paymentDetails.order_id,
