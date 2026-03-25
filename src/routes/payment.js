@@ -62,7 +62,6 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
 
     const paymentDetails = req.body.payload.payment.entity;
     console.log(paymentDetails);
-    
 
     const isPaymentAvailable = await Payment.findOne({
       orderId: paymentDetails.order_id,
@@ -82,6 +81,18 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
       success: false,
       message: `your order ${paymentDetails.status} successfully`,
     });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+paymentRouter.get("/payment/verification", userAuth, async (req, res) => {
+  try {
+    const loggedUser = req.user;
+    if (loggedUser.isPremiuemUser) {
+      return res.json({ isPremium: true });
+    }
+    res.json({ isPremium: false });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
